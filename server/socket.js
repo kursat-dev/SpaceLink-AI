@@ -7,7 +7,7 @@ let io;
 function initSocket(httpServer) {
   io = new Server(httpServer, {
     cors: {
-      origin: ['http://localhost:5173', 'http://localhost:3000'],
+      origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
       methods: ['GET', 'POST'],
       credentials: true
     }
@@ -16,7 +16,9 @@ function initSocket(httpServer) {
   io.use(async (socket, next) => {
     try {
       const token = socket.handshake.auth.token;
+      console.log('Socket handshake denemesi, token:', token ? 'Mevcut' : 'Eksik');
       if (!token) {
+        console.error('Socket auth hatasi: Token yok');
         return next(new Error('Authentication error'));
       }
 
@@ -28,8 +30,10 @@ function initSocket(httpServer) {
 
       socket.userId = user._id.toString();
       socket.user = user;
+      console.log('Socket auth basarili:', user.name);
       next();
     } catch (err) {
+      console.error('Socket auth catch hatasi:', err.message);
       next(new Error('Authentication error'));
     }
   });
