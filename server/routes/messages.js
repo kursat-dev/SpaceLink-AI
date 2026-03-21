@@ -3,6 +3,8 @@ const router = express.Router();
 const Message = require('../models/Message');
 const User = require('../models/User');
 const { auth } = require('../middleware/auth');
+const { getIO } = require('../socket');
+const { sendNotification } = require('../utils/notify');
 
 // @route   GET /api/messages
 // @desc    Get all conversations for authenticated user
@@ -119,6 +121,21 @@ router.post('/:userId', auth, async (req, res) => {
     const populated = await Message.findById(message._id)
       .populate('sender', 'name avatar')
       .populate('receiver', 'name avatar');
+
+    try {
+      const io = getIO();
+      io.to(`user:${req.params.userId}`).emit('new_message', populated);
+    } catch (err) {
+      console.error('Socket emit hatasi:', err.message);
+    }
+
+    sendNotification(
+      req.params.userId,
+      'new_message',
+      `${req.user.name} sent a message`,
+      content.trim().substring(0, 100),
+      { senderId: req.user._id, senderName: req.user.name }
+    ).catch(err => console.error('Bildirim olusturma hatasi:', err));
 
     res.status(201).json(populated);
   } catch (error) {

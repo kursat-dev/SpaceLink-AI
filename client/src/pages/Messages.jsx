@@ -2,12 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
+import { useSocket } from '../context/SocketContext';
 import { messagesAPI, usersAPI } from '../api';
 import Sidebar from '../components/Sidebar';
 import './Messages.css';
 
 export default function Messages() {
   const { user } = useAuth();
+  const { socket } = useSocket();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const [conversations, setConversations] = useState([]);
@@ -16,6 +18,11 @@ export default function Messages() {
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef(null);
+  const activeChatRef = useRef(null);
+
+  useEffect(() => {
+    activeChatRef.current = activeChat;
+  }, [activeChat]);
 
   useEffect(() => { loadConversations(); }, []);
 
@@ -35,6 +42,21 @@ export default function Messages() {
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNewMessage = (msg) => {
+      const senderId = msg.sender?._id || msg.sender;
+      if (activeChatRef.current && activeChatRef.current._id === senderId) {
+        setMessages(prev => [...prev, msg]);
+      }
+      loadConversations();
+    };
+
+    socket.on('new_message', handleNewMessage);
+    return () => socket.off('new_message', handleNewMessage);
+  }, [socket]);
 
   const openChat = async (userId) => {
     try {

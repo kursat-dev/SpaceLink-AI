@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const Project = require('../models/Project');
 const { auth } = require('../middleware/auth');
+const { sendNotification } = require('../utils/notify');
 
 /**
  * Jaccard Similarity: |A ∩ B| / |A ∪ B|
@@ -147,6 +148,17 @@ router.get('/', auth, async (req, res) => {
     }
 
     res.json(results);
+
+    const highMatches = results.users.filter(m => m.score >= 60);
+    for (const match of highMatches) {
+      sendNotification(
+        match.user._id,
+        'new_match',
+        'New match found!',
+        `${currentUser.name} is a ${match.score}% match with you`,
+        { userId: currentUser._id.toString(), score: match.score }
+      ).catch(err => console.error('Match bildirim hatasi:', err));
+    }
   } catch (error) {
     console.error('Matches error:', error);
     res.status(500).json({ message: 'Server error' });
