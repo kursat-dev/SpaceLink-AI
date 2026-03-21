@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { SocketProvider } from './context/SocketContext';
+import { NotificationProvider } from './context/NotificationContext';
 import Navbar from './components/Navbar';
+import NotificationToast from './components/NotificationToast';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -24,6 +27,7 @@ function AppRoutes() {
   return (
     <>
       <Navbar />
+      <NotificationToast />
       <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       <Routes>
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Landing />} />
@@ -46,7 +50,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppRoutes />
+        <SocketProvider>
+          <NotificationProvider>
+            <AppRoutes />
+          </NotificationProvider>
+        </SocketProvider>
       </AuthProvider>
     </BrowserRouter>
   );
