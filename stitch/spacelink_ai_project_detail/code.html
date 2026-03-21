@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lunar Rover Project | SpaceLink AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-error-container": "#570008",
+                        "secondary-fixed": "#d6e5ef",
+                        "on-primary": "#f1f2ff",
+                        "surface-dim": "#d0d5d8",
+                        "inverse-surface": "#0b0f10",
+                        "surface": "#f5f7f9",
+                        "error-dim": "#9f0519",
+                        "error": "#b31b25",
+                        "on-secondary": "#e7f5ff",
+                        "background": "#f5f7f9",
+                        "outline": "#747779",
+                        "on-surface": "#2c2f31",
+                        "on-primary-fixed": "#000000",
+                        "primary-fixed-dim": "#638eff",
+                        "on-tertiary": "#ffeef8",
+                        "surface-container-high": "#dfe3e6",
+                        "on-secondary-fixed": "#33414a",
+                        "on-secondary-container": "#46545d",
+                        "tertiary-dim": "#7f2d7e",
+                        "surface-variant": "#d9dde0",
+                        "secondary-dim": "#43525a",
+                        "secondary-fixed-dim": "#c8d6e1",
+                        "tertiary-fixed": "#f797f0",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eef1f3",
+                        "inverse-on-surface": "#9a9d9f",
+                        "surface-bright": "#f5f7f9",
+                        "on-primary-container": "#001e58",
+                        "on-tertiary-fixed-variant": "#6c1a6c",
+                        "primary": "#0052d0",
+                        "on-tertiary-container": "#610e63",
+                        "tertiary-fixed-dim": "#e88ae1",
+                        "on-error": "#ffefee",
+                        "on-secondary-fixed-variant": "#4f5d67",
+                        "on-background": "#2c2f31",
+                        "tertiary": "#8d3a8b",
+                        "primary-fixed": "#799dff",
+                        "secondary-container": "#d6e5ef",
+                        "on-surface-variant": "#595c5e",
+                        "on-tertiary-fixed": "#400042",
+                        "surface-container": "#e5e9eb",
+                        "on-primary-fixed-variant": "#00276c",
+                        "primary-container": "#799dff",
+                        "surface-tint": "#0052d0",
+                        "error-container": "#fb5151",
+                        "secondary": "#4f5d67",
+                        "inverse-primary": "#5e8bff",
+                        "outline-variant": "#abadaf",
+                        "primary-dim": "#0047b7",
+                        "tertiary-container": "#f797f0",
+                        "surface-container-highest": "#d9dde0"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 h-20 bg-slate-50/80 backdrop-blur-xl shadow-sm shadow-blue-500/5">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-bold tracking-tight text-blue-700 font-['Space_Grotesk']">SpaceLink AI</span>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-slate-500 hover:text-blue-500 transition-colors font-medium" href="#">Home</a>
+<a class="text-slate-500 hover:text-blue-500 transition-colors font-medium" href="#">Matches</a>
+<a class="text-blue-600 font-bold border-b-2 border-blue-600 pb-1" href="#">Projects</a>
+<a class="text-slate-500 hover:text-blue-500 transition-colors font-medium" href="#">Companies</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-surface-container-low px-4 py-2 rounded-full">
+<span class="material-symbols-outlined text-outline text-xl">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" placeholder="Search constellations..." type="text"/>
+</div>
+<div class="flex gap-4">
+<button class="p-2 hover:bg-blue-50/50 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="p-2 hover:bg-blue-50/50 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden border-2 border-surface-container-highest">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="Close up portrait of a young professional man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrDvIOQhYkefXEOucufyHGs-LbbA4wWx8JTmcKbP7_wKD6Mfil_CG6Fmy5V9WTLmYmerpeKRWmHBa8_8anCmAjYaI1gdk2sO_Hd-_ufocqj-VfEPt6cXpkcyt3uj2i4KO7dG-D29wEz0RKLWku9-r-qyTTjpwVqpUyCVjAlTqq_rFT5of4IbojJBcGLliZrwD09Gl0j0I2q_qdEccypjLDZBQNWDvPUU4vqMHGkED9B1BuxF45MKnjbCAi7sEKcsMgvZ6CrbhN9lFE"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col pt-24 pb-8 bg-slate-100 border-r-0 z-40 hidden md:flex">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-blue-600 text-sm leading-tight">SpaceLink AI</h3>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Orbital Dashboard</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col px-4 gap-1">
+<a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-blue-50 transition-all font-['Inter'] text-sm font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">account_circle</span> Profile
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-blue-50 transition-all font-['Inter'] text-sm font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">hub</span> Matches
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 border-r-4 border-blue-600 bg-blue-50/50 text-blue-700 font-['Inter'] text-sm font-medium rounded-l-lg" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">rocket_launch</span> Projects
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-blue-50 transition-all font-['Inter'] text-sm font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">business</span> Companies
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-blue-50 transition-all font-['Inter'] text-sm font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">forum</span> Messages
+            </a>
+</nav>
+<div class="px-4 mt-auto space-y-1">
+<button class="w-full mb-6 bg-gradient-to-br from-primary to-primary-container text-white py-3 rounded-full font-headline font-bold text-sm shadow-lg shadow-blue-500/20 hover:primary-dim transition-all">
+                Post Project
+            </button>
+<a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-blue-50 transition-all font-['Inter'] text-sm font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">help</span> Help
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-blue-50 transition-all font-['Inter'] text-sm font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">logout</span> Logout
+            </a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:ml-64 pt-24 pb-12 px-8 min-h-screen">
+<div class="max-w-6xl mx-auto">
+<!-- Hero Header Section -->
+<div class="relative w-full h-[400px] rounded-full overflow-hidden mb-12 shadow-2xl">
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface via-transparent to-transparent z-10"></div>
+<img alt="Lunar Rover Concept" class="w-full h-full object-cover" data-alt="High tech cinematic view of a robotic rover on lunar surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOrobqdkdIXMcgM-F5AWQ271QNRadWQ6Vl7vR2LSCua7a9mveru9_OzMskjMSIkTbZPVgVHEc7SlR-fcArsjgXATnGLYvBaqzP3hc-CarHSITM8lC2dxw2KYnXch-QWOtuX46ZkGNN3GsZR4LuD-Kc62KcRVAxRofyMMNoUYvyhp2ErtgHj1xrmcjICkeMgDD_I36N3YsDX87OceDJV9D3paA0-q-wlQ_H3Fo_CIiOoCWPvVPkp6hWOZE8XfKq8Mr0j4vcebs0okqK"/>
+<div class="absolute bottom-12 left-12 z-20">
+<div class="flex items-center gap-3 mb-4">
+<span class="bg-tertiary-container text-on-tertiary-container px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase">AI-Matched</span>
+<span class="bg-primary/20 backdrop-blur-md text-white px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase border border-white/20">Active Opportunity</span>
+</div>
+<h1 class="text-6xl font-headline font-bold text-white mb-4 leading-tight">Project Artemis: <br/><span class="text-primary-container">Next-Gen Lunar Rover</span></h1>
+<div class="flex items-center gap-6 text-white/80">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">schedule</span>
+<span class="text-sm font-medium">8 Month Phase</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">payments</span>
+<span class="text-sm font-medium">$250k - $450k Allocation</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Column: Content -->
+<div class="lg:col-span-8 space-y-12">
+<section>
+<h2 class="text-3xl font-headline font-bold mb-6 text-on-surface">The Mission</h2>
+<p class="text-lg text-on-surface-variant leading-relaxed mb-6 font-light">
+                            Developing a fully autonomous, AI-driven exploration vehicle designed for the south pole of the Moon. This project focuses on high-precision navigation in low-light conditions and the integration of a multi-sensor suite for real-time terrain mapping.
+                        </p>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-6 bg-surface-container-low rounded-xl border border-outline-variant/10">
+<h4 class="font-headline font-bold text-primary mb-2">Primary Objective</h4>
+<p class="text-sm text-on-surface-variant">Identify and map subterranean water ice deposits with 98% accuracy within a 5km radius.</p>
+</div>
+<div class="p-6 bg-surface-container-low rounded-xl border border-outline-variant/10">
+<h4 class="font-headline font-bold text-tertiary mb-2">Power Endurance</h4>
+<p class="text-sm text-on-surface-variant">Advanced solid-state battery systems coupled with vertical solar arrays for continuous lunar operations.</p>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-3xl font-headline font-bold mb-6 text-on-surface">Required Expertise</h2>
+<div class="flex flex-wrap gap-3">
+<div class="flex items-center gap-3 px-6 py-4 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10">
+<span class="material-symbols-outlined text-blue-600" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+<span class="font-medium">Robotics &amp; Kinematics</span>
+</div>
+<div class="flex items-center gap-3 px-6 py-4 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10">
+<span class="material-symbols-outlined text-purple-600" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="font-medium">Embedded AI/ML</span>
+</div>
+<div class="flex items-center gap-3 px-6 py-4 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10">
+<span class="material-symbols-outlined text-cyan-600" style="font-variation-settings: 'FILL' 1;">engineering</span>
+<span class="font-medium">Aerospace Systems</span>
+</div>
+<div class="flex items-center gap-3 px-6 py-4 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10">
+<span class="material-symbols-outlined text-amber-600" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-medium">Sensor Fusion (LIDAR/RADAR)</span>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-3xl font-headline font-bold mb-6 text-on-surface">Project Team</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl">
+<img alt="Team Lead" class="w-16 h-16 rounded-full object-cover grayscale hover:grayscale-0 transition-all" data-alt="Portrait of a female engineering lead" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6m4U5I2037cs9liqXf2W-HeuoPFFFVZkNkrOYs1YP0FfU3p5lnlPejqxWOLEn_Yh1BQkbofVjYnzW2IKUPphyBJ3lNxQQcrIHhz4N-1mfPRdHUt-15NWwvy_C4iWcdYn53f1RCN9ZFqPvljo0J4L_i9auJiXJ89AnooDg-O5iW69SE1j_D-hEeQ4nySvjoOeuULu2679EBGoR3tq9_5qc-O1lzuPRNqIsp7a7e9_8CTQcVvz3Jn-b4hA2JYxA2LDiJx4mKbTJT-I4"/>
+<div>
+<h4 class="font-bold text-on-surface">Dr. Elena Vance</h4>
+<p class="text-xs text-on-surface-variant font-medium">Chief Robotics Engineer</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl">
+<img alt="Team Member" class="w-16 h-16 rounded-full object-cover grayscale hover:grayscale-0 transition-all" data-alt="Portrait of a male AI specialist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGBJOEcn_K-j1pkhHTI4W0WKlAwUo8alJgrG-y2qQIeCjxylqGngTiQJ0HTqV95-otcAfUYYk96qpGHqTeE9ZAntoI0dQcGejsGHlMT89aqbPALbfE7lxly8EuGIVMd1pBBe1dl9KSfgA_kURfhtttXTxsF-vugShLGJErV9werqNTh-AFGXwvskfA2km1tAkAq5J41jgrYqn58qIB4w3wcINzVcuKdO8a9bcF6AiQpZce7CaKRyjRELwhSrPCVtiz3lEylmWAjgQQ"/>
+<div>
+<h4 class="font-bold text-on-surface">Marcus Thorne</h4>
+<p class="text-xs text-on-surface-variant font-medium">Lead AI Architect</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl">
+<img alt="Team Member" class="w-16 h-16 rounded-full object-cover grayscale hover:grayscale-0 transition-all" data-alt="Portrait of a female aerospace designer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABRtaZSiunaZJrH_5OXhRUq--JPHOiZnflElakrGIjVQ9PK73xiKbFDEgtFHRTbrnzFyGRGQ-cp_VsCvhkwyF0F420IngihfJmyGN0dkqHi1N_OTBby0aZgOu1CPdus4Khmf8JGTwj-vFATcNBAqytJykfOGkC9iTXD1Q7CLGwNbpT7pCb-WpEsorwL_vyXCoaWmd0gIJvDTaVTmHGqhqIPjlRZuZbX8XK2Hn5x9J_SvjeDsswpbwSb9SVcdagkJ2C7sVZNubKaSBB"/>
+<div>
+<h4 class="font-bold text-on-surface">Sarah Jenkins</h4>
+<p class="text-xs text-on-surface-variant font-medium">Thermal Systems Expert</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 border-2 border-dashed border-outline-variant/30 rounded-xl justify-center cursor-pointer hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-outline">add_circle</span>
+<span class="text-sm font-bold text-outline">Your Slot Available</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Sidebar Actions -->
+<div class="lg:col-span-4">
+<div class="sticky top-32 space-y-8">
+<!-- Application Card -->
+<div class="glass p-8 rounded-[2rem] shadow-xl border border-white/40">
+<h3 class="text-2xl font-headline font-bold mb-2">Ready for Liftoff?</h3>
+<p class="text-sm text-on-surface-variant mb-8">This project matches 92% of your professional profile and orbital history.</p>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between items-center text-sm py-2 border-b border-outline-variant/10">
+<span class="text-on-surface-variant">Deadline</span>
+<span class="font-bold">Oct 12, 2024</span>
+</div>
+<div class="flex justify-between items-center text-sm py-2 border-b border-outline-variant/10">
+<span class="text-on-surface-variant">Applicants</span>
+<span class="font-bold">14 Pros</span>
+</div>
+<div class="flex justify-between items-center text-sm py-2">
+<span class="text-on-surface-variant">Location</span>
+<span class="font-bold">Hybrid / Orbital</span>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-4 rounded-xl font-headline font-bold text-lg hover:primary-dim transition-all flex items-center justify-center gap-2 mb-4">
+                                Apply / Join <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="w-full py-4 rounded-xl border border-outline-variant font-headline font-bold text-on-surface-variant hover:bg-surface-container-low transition-all">
+                                Save for Later
+                            </button>
+</div>
+<!-- Technical Specs Card -->
+<div class="bg-surface-container-highest/30 p-8 rounded-[2rem]">
+<h4 class="text-xs font-bold uppercase tracking-[0.2em] text-outline mb-4">Mission Parameters</h4>
+<ul class="space-y-4">
+<li class="flex gap-4">
+<span class="material-symbols-outlined text-primary text-xl">satellite_alt</span>
+<div>
+<p class="text-sm font-bold">Deep Space Network</p>
+<p class="text-[11px] text-on-surface-variant">Ka-band communication protocols</p>
+</div>
+</li>
+<li class="flex gap-4">
+<span class="material-symbols-outlined text-tertiary text-xl">memory</span>
+<div>
+<p class="text-sm font-bold">Quantum Core AI</p>
+<p class="text-[11px] text-on-surface-variant">Edge computing for pathfinding</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 border-t border-slate-200/50 mt-20 relative z-30">
+<div class="w-full max-w-7xl mx-auto px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex flex-col gap-2">
+<span class="font-['Space_Grotesk'] font-medium text-slate-900 dark:text-white text-lg">SpaceLink AI</span>
+<p class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500">© 2024 SpaceLink AI. Pioneering the Orbital Economy.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 underline decoration-blue-500/30 underline-offset-4 transition-opacity" href="#">Privacy Policy</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 underline decoration-blue-500/30 underline-offset-4 transition-opacity" href="#">Terms of Service</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 underline decoration-blue-500/30 underline-offset-4 transition-opacity" href="#">Cookie Settings</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 underline decoration-blue-500/30 underline-offset-4 transition-opacity" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</body></html>

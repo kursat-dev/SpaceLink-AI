@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Profile | SpaceLink AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error-container": "#570008",
+              "secondary-fixed": "#d6e5ef",
+              "on-primary": "#f1f2ff",
+              "surface-dim": "#d0d5d8",
+              "inverse-surface": "#0b0f10",
+              "surface": "#f5f7f9",
+              "error-dim": "#9f0519",
+              "error": "#b31b25",
+              "on-secondary": "#e7f5ff",
+              "background": "#f5f7f9",
+              "outline": "#747779",
+              "on-surface": "#2c2f31",
+              "on-primary-fixed": "#000000",
+              "primary-fixed-dim": "#638eff",
+              "on-tertiary": "#ffeef8",
+              "surface-container-high": "#dfe3e6",
+              "on-secondary-fixed": "#33414a",
+              "on-secondary-container": "#46545d",
+              "tertiary-dim": "#7f2d7e",
+              "surface-variant": "#d9dde0",
+              "secondary-dim": "#43525a",
+              "secondary-fixed-dim": "#c8d6e1",
+              "tertiary-fixed": "#f797f0",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#eef1f3",
+              "inverse-on-surface": "#9a9d9f",
+              "surface-bright": "#f5f7f9",
+              "on-primary-container": "#001e58",
+              "on-tertiary-fixed-variant": "#6c1a6c",
+              "primary": "#0052d0",
+              "on-tertiary-container": "#610e63",
+              "tertiary-fixed-dim": "#e88ae1",
+              "on-error": "#ffefee",
+              "on-secondary-fixed-variant": "#4f5d67",
+              "on-background": "#2c2f31",
+              "tertiary": "#8d3a8b",
+              "primary-fixed": "#799dff",
+              "secondary-container": "#d6e5ef",
+              "on-surface-variant": "#595c5e",
+              "on-tertiary-fixed": "#400042",
+              "surface-container": "#e5e9eb",
+              "on-primary-fixed-variant": "#00276c",
+              "primary-container": "#799dff",
+              "surface-tint": "#0052d0",
+              "error-container": "#fb5151",
+              "secondary": "#4f5d67",
+              "inverse-primary": "#5e8bff",
+              "outline-variant": "#abadaf",
+              "primary-dim": "#0047b7",
+              "tertiary-container": "#f797f0",
+              "surface-container-highest": "#d9dde0"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 h-20 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm shadow-blue-500/5">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tight text-blue-700 dark:text-blue-400 font-['Space_Grotesk']">SpaceLink AI</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 transition-colors" href="#">Home</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 transition-colors" href="#">Matches</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 transition-colors" href="#">Projects</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 transition-colors" href="#">Companies</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-low border-none rounded-xl px-4 py-2 w-64 focus:ring-2 focus:ring-primary/20 transition-all text-sm" placeholder="Search orbit..." type="text"/>
+</div>
+<button class="p-2 text-slate-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary/10">
+<img class="w-full h-full object-cover" data-alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2TZgDO5C5fBEd8v29yfUMEgG6jWGuugbfXOhOKq0vlXSOqQQE3KHwQixdTSsuasdAsdIeUKgm4uvXaQCyVbg8i5XRP7vRizn6xJLO5EI7ZbKpfYU2cm4bG3LYLJBHmPP7EI5RKyTrv3uiQH6_BWTWs1gHUIrGy8ly6MZUb2hUogL6DKeHsyz3y7WmUL4kE2PpkxFZhH7AD1_hK7ZRknsheM8xxjF7J1mRDnypA8Was55EvghufUcRQFx7dZ_MszOAGVMLgFSCzxY9"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Desktop Only) -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-full w-64 flex-col pt-24 pb-8 bg-slate-100 dark:bg-slate-950 transition-transform duration-200 ease-out z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 px-2">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div>
+<p class="font-headline font-bold text-blue-600 text-sm">SpaceLink AI</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest">Orbital Dashboard</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1 px-4">
+<!-- Active: Profile -->
+<a class="flex items-center gap-3 px-4 py-3 border-r-4 border-blue-600 bg-blue-50/50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-['Inter'] text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span>Profile</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all font-['Inter'] text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span>Matches</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all font-['Inter'] text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span>Projects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all font-['Inter'] text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="business">business</span>
+<span>Companies</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all font-['Inter'] text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span>Messages</span>
+</a>
+</nav>
+<div class="px-8 mt-6">
+<button class="w-full py-3 bg-primary text-white rounded-xl font-medium shadow-lg shadow-primary/20 hover:bg-primary-dim transition-all active:scale-95">
+                Post Project
+            </button>
+</div>
+<div class="mt-auto px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all font-['Inter'] text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all font-['Inter'] text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:pl-64 pt-20 min-h-screen">
+<div class="max-w-7xl mx-auto p-8 lg:p-12">
+<!-- Bento Grid Header / Profile Card -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+<!-- Main Identity Card -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-full p-8 shadow-sm flex flex-col md:flex-row items-center md:items-start gap-8">
+<div class="relative">
+<div class="w-40 h-40 rounded-full border-4 border-primary/10 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of an aerospace engineer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhOfxnwt51sopeK9CtlpqWupQMtYQ-ocWK7aZUz1cqB7AIs82ATCWfzXFxlJlWlAK_oNd0d6zt36pu1o2bbD4glB-0ucZ_orI5T1fK8dTIGEaDNf1TO65Cs3wZAA8R90bTHxyzNnMvY5hlDE9Z4zlLObIGuPGCY2jjpE8Cr01EiFPdcwhvIJpsWfQc3iXwFZiJRkgJU4nebQNpeniP32mnpTlhl_PcCB2VJdxTR6_izOK_4daRdHncG--HAAf_uwlzGcXmraO37RB0"/>
+</div>
+<div class="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-4 border-white"></div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+<div>
+<h1 class="font-headline text-4xl font-bold text-on-surface">Dr. Elias Vance</h1>
+<p class="text-primary font-medium tracking-wide mt-1">Senior Systems Architect, Orbital Logistics</p>
+</div>
+<div class="flex gap-2 justify-center">
+<span class="bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">Available</span>
+<span class="bg-tertiary-container text-on-tertiary-container px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+                                </span>
+</div>
+</div>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-6 max-w-2xl">
+                            Specializing in the intersection of AI and satellite constellation management. 12+ years of experience building autonomous navigation protocols for LEO missions. Dedicated to making space accessible through software-defined hardware.
+                        </p>
+<div class="flex flex-wrap gap-4 justify-center md:justify-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="text-sm">Geneva, CH (Remote)</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+<span class="text-sm">eliasvance.ai</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+<span class="text-sm">elias@orbital.tech</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Match Score Card -->
+<div class="lg:col-span-4 bg-primary rounded-full p-8 text-on-primary flex flex-col items-center justify-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+<div class="absolute bottom-0 left-0 w-32 h-32 bg-primary-container/20 rounded-full -ml-16 -mb-16 blur-2xl"></div>
+<div class="relative z-10 flex flex-col items-center">
+<span class="text-[10px] uppercase tracking-[0.2em] opacity-70 mb-4 font-bold">Project Synergy Match</span>
+<div class="relative flex items-center justify-center w-36 h-36">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-white/20" cx="72" cy="72" fill="transparent" r="64" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-white transition-all duration-1000" cx="72" cy="72" fill="transparent" r="64" stroke="currentColor" stroke-dasharray="402" stroke-dashoffset="48" stroke-width="8"></circle>
+</svg>
+<span class="absolute font-headline text-4xl font-bold">94%</span>
+</div>
+<p class="mt-6 text-center text-sm font-medium opacity-90 leading-tight">
+                            Exceptional match for <br/> "Project Nebula II"
+                        </p>
+<button class="mt-6 px-6 py-2 bg-white text-primary rounded-full text-xs font-bold uppercase tracking-wider hover:bg-on-primary transition-colors">
+                            View Full Analysis
+                        </button>
+</div>
+</div>
+</div>
+<!-- Detailed Stats / Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Skills Column -->
+<div class="space-y-8">
+<section class="bg-surface-container-low rounded-full p-8">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-headline text-xl font-bold">Expertise Clusters</h3>
+<span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-lowest text-primary px-4 py-2 rounded-full text-sm font-medium border border-outline-variant/15">AI / Machine Learning</span>
+<span class="bg-surface-container-lowest text-primary px-4 py-2 rounded-full text-sm font-medium border border-outline-variant/15">Satellite Systems</span>
+<span class="bg-surface-container-lowest text-primary px-4 py-2 rounded-full text-sm font-medium border border-outline-variant/15">Embedded Rust</span>
+<span class="bg-surface-container-lowest text-primary px-4 py-2 rounded-full text-sm font-medium border border-outline-variant/15">Orbital Mechanics</span>
+<span class="bg-surface-container-lowest text-primary px-4 py-2 rounded-full text-sm font-medium border border-outline-variant/15">Real-time OS</span>
+<span class="bg-surface-container-lowest text-primary px-4 py-2 rounded-full text-sm font-medium border border-outline-variant/15">FPGA</span>
+</div>
+</section>
+<section class="bg-surface-container-low rounded-full p-8">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline text-xl font-bold">Languages</h3>
+<span class="material-symbols-outlined text-primary" data-icon="translate">translate</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium">English</span>
+<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded uppercase font-bold">Native</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium">French</span>
+<span class="text-[10px] text-slate-500 bg-slate-200 px-2 py-0.5 rounded uppercase font-bold">C1 Level</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium">German</span>
+<span class="text-[10px] text-slate-500 bg-slate-200 px-2 py-0.5 rounded uppercase font-bold">B2 Level</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Experience Column -->
+<div class="lg:col-span-2 space-y-8">
+<section class="bg-surface-container-lowest rounded-full p-8 shadow-sm">
+<div class="flex items-center justify-between mb-10">
+<h3 class="font-headline text-2xl font-bold">Orbital Experience</h3>
+<button class="text-primary text-sm font-bold flex items-center gap-1">
+                                Download CV <span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+</button>
+</div>
+<div class="space-y-12">
+<!-- Exp 1 -->
+<div class="flex gap-6 relative">
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center border border-outline-variant/15">
+<span class="material-symbols-outlined text-primary" data-icon="satellite_alt">satellite_alt</span>
+</div>
+<div class="w-px h-full bg-outline-variant/20 absolute top-12 left-6 -z-0"></div>
+</div>
+<div class="flex-1 pb-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-lg font-bold">Chief Architect — AstraComm Systems</h4>
+<span class="text-xs text-on-surface-variant bg-surface-container-low px-3 py-1 rounded-full font-medium">2020 - Present</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                                        Leading the software architecture for the Gen-3 StarLink competitors. Managed a team of 45 engineers across 3 continents to deploy sub-10ms latency ground-to-orbit protocols.
+                                    </p>
+</div>
+</div>
+<!-- Exp 2 -->
+<div class="flex gap-6 relative">
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center border border-outline-variant/15">
+<span class="material-symbols-outlined text-primary" data-icon="rocket">rocket</span>
+</div>
+<div class="w-px h-full bg-outline-variant/20 absolute top-12 left-6 -z-0"></div>
+</div>
+<div class="flex-1 pb-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-lg font-bold">Embedded Lead — Lunar Pioneers</h4>
+<span class="text-xs text-on-surface-variant bg-surface-container-low px-3 py-1 rounded-full font-medium">2016 - 2020</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                                        Authored mission-critical safety software for autonomous lunar landers. Successfully executed 4 soft landings with zero software-related anomalies.
+                                    </p>
+</div>
+</div>
+<!-- Exp 3 -->
+<div class="flex gap-6 relative">
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center border border-outline-variant/15">
+<span class="material-symbols-outlined text-primary" data-icon="science">science</span>
+</div>
+</div>
+<div class="flex-1 pb-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-lg font-bold">Research Fellow — ESA</h4>
+<span class="text-xs text-on-surface-variant bg-surface-container-low px-3 py-1 rounded-full font-medium">2012 - 2016</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                                        Published 12 peer-reviewed papers on swarm robotics and collective orbital intelligence. Developed initial prototypes for the "SpaceLink" communication mesh.
+                                    </p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-900 border-t border-slate-200/50 dark:border-slate-800/50 w-full py-12 mt-12">
+<div class="w-full max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-['Space_Grotesk'] font-medium text-slate-900 dark:text-white text-lg">SpaceLink AI</span>
+<p class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500">© 2024 SpaceLink AI. Pioneering the Orbital Economy.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 underline decoration-blue-500/30 underline-offset-4 transition-opacity opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 underline decoration-blue-500/30 underline-offset-4 transition-opacity opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 underline decoration-blue-500/30 underline-offset-4 transition-opacity opacity-80 hover:opacity-100" href="#">Cookie Settings</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 underline decoration-blue-500/30 underline-offset-4 transition-opacity opacity-80 hover:opacity-100" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</main>
+<!-- Mobile Navigation Bar -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-white/80 backdrop-blur-xl border-t border-slate-200 flex justify-around items-center h-20 px-4 z-50">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-[10px] uppercase tracking-tighter">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="text-[10px] uppercase tracking-tighter">Matches</span>
+</a>
+<div class="relative -top-6">
+<button class="bg-primary text-white w-14 h-14 rounded-full shadow-xl shadow-primary/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="text-[10px] uppercase tracking-tighter">Projects</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+<span class="text-[10px] uppercase tracking-tighter font-bold">Profile</span>
+</a>
+</div>
+</body></html>
