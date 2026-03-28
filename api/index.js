@@ -4,21 +4,30 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
 
-// Load env vars
-const dotenv = require('dotenv');
-const path = require('path');
-dotenv.config({ path: path.join(__dirname, '../server/.env') });
+// Load env vars (dotenv is still useful for local development if needed)
+require('dotenv').config();
 
 // DB connection (cached for serverless)
+// Initialize mongoose but don't connect yet
 let isConnected = false;
+
 const connectDB = async () => {
   if (isConnected) return;
+  
+  if (!process.env.MONGODB_URI) {
+    console.error('CRITICAL: MONGODB_URI is not defined in environment variables!');
+    throw new Error('MONGODB_URI is missing');
+  }
+
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
-    isConnected = true;
+    mongoose.set('strictQuery', false);
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+    });
+    isConnected = !!conn.connections[0].readyState;
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`MongoDB Error: ${error.message}`);
+    console.error(`MongoDB Connection Error: ${error.message}`);
     throw error;
   }
 };
