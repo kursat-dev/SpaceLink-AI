@@ -1,6 +1,6 @@
 # SpaceLink AI 🚀
 
-**SpaceLink AI** is an intelligent ecosystem matchmaking platform designed specifically for the modern space industry. It utilizes a neural matching engine to connect aerospace engineers, orbital startups, satellite enterprises, and space-focused investors based on technical synergy and project requirements.
+**SpaceLink AI**, modern uzay endüstrisi için özel olarak tasarlanmış akıllı bir ekosistem eşleştirme platformudur. Havacılık mühendislerini, yörünge girişimlerini, uydu işletmelerini ve uzay odaklı yatırımcıları teknik sinerji ve proje gereksinimlerine göre bağlamak için sinirsel bir eşleştirme motoru kullanır.
 
 ![SpaceLink AI Preview](https://img.shields.io/badge/Status-Beta-purple)
 ![SpaceLink AI Tech](https://img.shields.io/badge/Stack-MERN-blue)
@@ -8,74 +8,74 @@
 
 ---
 
-## 🌌 Core Features
+## 🌌 Temel Özellikler
 
-- **Neural Matching Engine**: Proprietary AI (Weighted Jaccard Similarity) that analyzes skills and interests to find the perfect technical partners.
-- **Mission Directory**: A centralized hub for active orbital projects, payloads, and subsystems.
-- **Real-time Messaging**: Secure communication threads between matched entities.
-- **Internationalization (i18n)**: Native support for English and Turkish languages with real-time UI switching.
-- **Celestial Dashboard**: A high-fidelity, glassmorphism-inspired UI ("Celestial Architect") providing a 360-degree overview of your orbital networking status.
-- **Dynamic Profiles**: Skill-based telemetry and experience tracking for the aerospace workforce.
+- **Sinirsel Eşleştirme Motoru**: Mükemmel teknik ortakları bulmak için yetenekleri ve ilgi alanlarını analiz eden tescilli yapay zeka (Ağırlıklı Jaccard Benzerliği).
+- **Görev Dizini**: Aktif yörünge projeleri, faydalı yükler ve alt sistemler için merkezi bir üs.
+- **Gerçek Zamanlı Mesajlaşma**: Eşleşen taraflar arasında güvenli iletişim kanalları.
+- **Uluslararasılaştırma (i18n)**: Gerçek zamanlı arayüz değiştirme ile İngilizce ve Türkçe dilleri için yerel destek.
+- **Göksel Kontrol Paneli**: Yörünge ağ durumunuzun 360 derecelik bir görünümünü sunan, yüksek kaliteli, glassmorphism esintili bir kullanıcı arayüzü ("Celestial Architect").
+- **Dinamik Profiller**: Havacılık ve uzay işgücü için yetenek tabanlı telemetri ve deneyim takibi.
 
 ---
 
-## 🏗️ Project Structure
+## 🏗️ Proje Yapısı
 
-The project follows a modular full-stack architecture:
+Proje, modüler bir full-stack mimarisini takip eder:
 
 ```text
 SpaceLink-AI/
 ├── client/                 # Frontend (React + Vite)
 │   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── pages/          # Individual screen definitions
-│   │   ├── context/        # Auth and global state
-│   │   ├── locales/        # i18n (EN/TR) translation dictionaries
-│   │   └── api.js          # Axios client with JWT interceptors
-│   └── index.html          # Entry point
+│   │   ├── components/     # Yeniden kullanılabilir kullanıcı arayüzü bileşenleri
+│   │   ├── pages/          # Bireysel ekran tanımları
+│   │   ├── context/        # Kimlik doğrulama (Auth) ve global durum (state)
+│   │   ├── locales/        # i18n (EN/TR) çeviri sözlükleri
+│   │   └── api.js          # JWT interceptor'ları ile Axios istemcisi
+│   └── index.html          # Giriş noktası
 ├── server/                 # Backend (Node.js + Express)
-│   ├── models/             # Mongoose schemas (User, Project, Message)
-│   ├── routes/             # API endpoints (Auth, Matches, Projects, etc.)
-│   ├── middleware/         # Auth guards and Language parsing
-│   ├── config/             # DB & Server configuration
-│   └── seed.js             # Mock data generation script
-└── stitch/                 # Design assets and original styleguide
+│   ├── models/             # Mongoose şemaları (User, Project, Message)
+│   ├── routes/             # API uç noktaları (Auth, Matches, Projects, vb.)
+│   ├── middleware/         # Kimlik doğrulama korumaları ve Dil ayrıştırma
+│   ├── config/             # Veritabanı ve Sunucu yapılandırması
+│   └── seed.js             # Sahte veri (mock data) oluşturma betiği
+└── stitch/                 # Tasarım varlıkları ve orijinal stil rehberi
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Teknoloji Yığını
 
-- **Frontend**: React 18, Vite, React Router 6, i18next, Vanilla CSS (Celestial Architect Design System).
+- **Frontend**: React 18, Vite, React Router 6, i18next, Vanilla CSS (Celestial Architect Tasarım Sistemi).
 - **Backend**: Node.js, Express, JWT, Bcrypt.
-- **Database**: MongoDB + Mongoose.
-- **Icons**: Google Material Symbols.
+- **Veritabanı**: MongoDB + Mongoose.
+- **İkonlar**: Google Material Symbols.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Başlangıç
 
-### 1. Prerequisites
+### 1. Ön Koşullar
 - Node.js (v16+)
-- MongoDB (Running locally or via Atlas)
+- MongoDB (Yerel olarak veya Atlas üzerinden çalışan)
 
-### 2. Backend Setup
+### 2. Backend Kurulumu
 ```bash
 cd server
 npm install
 npm run dev
 ```
-*Note: Create a `.env` file with `MONGO_URI`, `JWT_SECRET`, and `PORT=5001`.*
+*Not: `MONGO_URI`, `JWT_SECRET` ve `PORT=5001` içeren bir `.env` dosyası oluşturun.*
 
-### 3. Frontend Setup
+### 3. Frontend Kurulumu
 ```bash
 cd client
 npm install
 npm run dev
 ```
 
-### 4. Database Seeding
-To populate the application with mock space-industry data:
+### 4. Veritabanını Doldurma (Seeding)
+Uygulamayı sahte uzay endüstrisi verileriyle doldurmak için:
 ```bash
 cd server
 node seed.js
@@ -83,9 +83,9 @@ node seed.js
 
 ---
 
-## 🛡️ License
-Distributed under the MIT License. See `LICENSE` for more information.
+## 🛡️ Lisans
+MIT Lisansı altında dağıtılmaktadır. Daha fazla bilgi için `LICENSE` dosyasına bakın.
 
 ---
 
-**SpaceLink AI** — *Pioneering the Orbital Economy through intelligent connections.*
+**SpaceLink AI** — *Akıllı bağlantılar aracılığıyla Yörünge Ekonomisine öncülük ediyor.*
