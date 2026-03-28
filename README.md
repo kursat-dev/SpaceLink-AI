@@ -5,6 +5,7 @@
 ![SpaceLink AI Preview](https://img.shields.io/badge/Status-Beta-purple)
 ![SpaceLink AI Tech](https://img.shields.io/badge/Stack-MERN-blue)
 ![SpaceLink AI i18n](https://img.shields.io/badge/i18n-EN%20%7C%20TR-green)
+![SpaceLink AI License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
@@ -39,7 +40,9 @@ SpaceLink-AI/
 │   ├── middleware/         # Kimlik doğrulama korumaları ve Dil ayrıştırma
 │   ├── config/             # Veritabanı ve Sunucu yapılandırması
 │   └── seed.js             # Sahte veri (mock data) oluşturma betiği
-└── stitch/                 # Tasarım varlıkları ve orijinal stil rehberi
+├── api/                    # API dokümantasyonu
+├── stitch/                 # Tasarım varlıkları ve orijinal stil rehberi
+└── architecture_analysis.md # Detaylı mimari analizi
 ```
 
 ---
@@ -47,9 +50,10 @@ SpaceLink-AI/
 ## 🛠️ Teknoloji Yığını
 
 - **Frontend**: React 18, Vite, React Router 6, i18next, Vanilla CSS (Celestial Architect Tasarım Sistemi).
-- **Backend**: Node.js, Express, JWT, Bcrypt.
+- **Backend**: Node.js, Express, JWT, Bcrypt, Socket.io.
 - **Veritabanı**: MongoDB + Mongoose.
 - **İkonlar**: Google Material Symbols.
+- **Dağıtım**: Vercel.
 
 ---
 
@@ -83,7 +87,18 @@ node seed.js
 
 ---
 
-## 🛡️ Lisans
+## � Dokümantasyon
+
+- [Client Dokümantasyonu](./client/README.md) - Frontend geliştirme rehberi
+- [Server Dokümantasyonu](./server/README.md) - Backend API ve mimari
+- [API Dokümantasyonu](./api/README.md) - API endpointleri
+- [Tasarım Rehberi](./stitch/README.md) - UI/UX tasarım prensipleri
+- [Mimari Analizi](./architecture_analysis.md) - Detaylı teknik analiz
+
+---
+
+## �🛡️ Lisans
+
 MIT Lisansı altında dağıtılmaktadır. Daha fazla bilgi için `LICENSE` dosyasına bakın.
 
 ---
