@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const Project = require('../models/Project');
 const { auth } = require('../middleware/auth');
+const { escapeRegExp } = require('../utils/escapeRegex');
 
 // @route   GET /api/recommendations
 // @desc    Get personalized recommendations for authenticated user
@@ -15,8 +16,8 @@ router.get('/', auth, async (req, res) => {
       owner: { $ne: currentUser._id },
       status: 'active',
       $or: [
-        { requiredSkills: { $in: currentUser.skills.map(s => new RegExp(s, 'i')) } },
-        { tags: { $in: currentUser.interests.map(i => new RegExp(i, 'i')) } }
+        { requiredSkills: { $in: currentUser.skills.map(s => new RegExp(escapeRegExp(s), 'i')) } },
+        { tags: { $in: currentUser.interests.map(i => new RegExp(escapeRegExp(i), 'i')) } }
       ]
     })
       .populate('owner', 'name role avatar title')
@@ -27,8 +28,8 @@ router.get('/', auth, async (req, res) => {
     const recommendedPeople = await User.find({
       _id: { $ne: currentUser._id },
       $or: [
-        { skills: { $in: currentUser.skills.map(s => new RegExp(s, 'i')) } },
-        { interests: { $in: currentUser.interests.map(i => new RegExp(i, 'i')) } }
+        { skills: { $in: currentUser.skills.map(s => new RegExp(escapeRegExp(s), 'i')) } },
+        { interests: { $in: currentUser.interests.map(i => new RegExp(escapeRegExp(i), 'i')) } }
       ]
     })
       .select('-password')
@@ -40,8 +41,8 @@ router.get('/', auth, async (req, res) => {
       _id: { $ne: currentUser._id },
       role: 'Company',
       $or: [
-        { skills: { $in: currentUser.interests.map(i => new RegExp(i, 'i')) } },
-        { interests: { $in: currentUser.skills.map(s => new RegExp(s, 'i')) } }
+        { skills: { $in: currentUser.interests.map(i => new RegExp(escapeRegExp(i), 'i')) } },
+        { interests: { $in: currentUser.skills.map(s => new RegExp(escapeRegExp(s), 'i')) } }
       ]
     })
       .select('-password')
