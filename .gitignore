@@ -24,7 +24,12 @@ out
 client/node_modules
 client/dist
 client/.env
+client/.env.local
+client/.env.production
 
 # Server specific
 server/node_modules
 server/.env
+
+# API (Vercel serverless)
+api/node_modules
