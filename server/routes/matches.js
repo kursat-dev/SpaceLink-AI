@@ -4,6 +4,7 @@ const User = require('../models/User');
 const Project = require('../models/Project');
 const { auth } = require('../middleware/auth');
 const { sendNotification } = require('../utils/notify');
+const { escapeRegExp } = require('../utils/escapeRegex');
 
 /**
  * Jaccard Similarity: |A ∩ B| / |A ∪ B|
@@ -111,8 +112,8 @@ router.get('/', auth, async (req, res) => {
 
     const results = { users: [], projects: [] };
 
-    const skillRegexes = (currentUser.skills || []).map(s => new RegExp(`^${s}$`, 'i'));
-    const interestRegexes = (currentUser.interests || []).map(i => new RegExp(`^${i}$`, 'i'));
+    const skillRegexes = (currentUser.skills || []).map(s => new RegExp(`^${escapeRegExp(s)}$`, 'i'));
+    const interestRegexes = (currentUser.interests || []).map(i => new RegExp(`^${escapeRegExp(i)}$`, 'i'));
 
     // Match with users
     if (type === 'all' || type === 'users') {

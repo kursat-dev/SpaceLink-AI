@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const { auth } = require('../middleware/auth');
+const { escapeRegExp } = require('../utils/escapeRegex');
 
 // @route   GET /api/users
 // @desc    Get all users with optional filters
@@ -11,12 +12,13 @@ router.get('/', async (req, res) => {
     const query = {};
 
     if (role) query.role = role;
-    if (skill) query.skills = { $in: [new RegExp(skill, 'i')] };
+    if (skill) query.skills = { $in: [new RegExp(escapeRegExp(skill), 'i')] };
     if (search) {
+      const safeSearch = escapeRegExp(search);
       query.$or = [
-        { name: new RegExp(search, 'i') },
-        { title: new RegExp(search, 'i') },
-        { bio: new RegExp(search, 'i') }
+        { name: new RegExp(safeSearch, 'i') },
+        { title: new RegExp(safeSearch, 'i') },
+        { bio: new RegExp(safeSearch, 'i') }
       ];
     }
 

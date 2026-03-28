@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Project = require('../models/Project');
 const { auth, optionalAuth } = require('../middleware/auth');
+const { escapeRegExp } = require('../utils/escapeRegex');
+const { sendNotification } = require('../utils/notify');
 
 // @route   GET /api/projects
 // @desc    Get all projects
@@ -11,12 +13,13 @@ router.get('/', optionalAuth, async (req, res) => {
     const query = {};
 
     if (status) query.status = status;
-    if (skill) query.requiredSkills = { $in: [new RegExp(skill, 'i')] };
+    if (skill) query.requiredSkills = { $in: [new RegExp(escapeRegExp(skill), 'i')] };
     if (owner) query.owner = owner;
     if (search) {
+      const safeSearch = escapeRegExp(search);
       query.$or = [
-        { title: new RegExp(search, 'i') },
-        { description: new RegExp(search, 'i') }
+        { title: new RegExp(safeSearch, 'i') },
+        { description: new RegExp(safeSearch, 'i') }
       ];
     }
 
@@ -173,8 +176,90 @@ router.post('/:id/apply', auth, async (req, res) => {
       .populate('applicants.user', 'name avatar title');
 
     res.json(populated);
+
+    // Notify project owner about new applicant
+    sendNotification(
+      project.owner,
+      'new_applicant',
+      'New Application Received',
+      `${req.user.name} applied to your project "${project.title}"`,
+      { projectId: project._id.toString(), applicantId: req.user._id.toString() }
+    ).catch(err => console.error('Apply notification error:', err));
   } catch (error) {
     console.error('Apply error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// @route   PUT /api/projects/:id/applicants/:applicantId
+// @desc    Accept or reject an applicant
+router.put('/:id/applicants/:applicantId', auth, async (req, res) => {
+  try {
+    const { status } = req.body; // 'accepted' or 'rejected'
+    if (!['accepted', 'rejected'].includes(status)) {
+      return res.status(400).json({ message: 'Status must be accepted or rejected' });
+    }
+
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    // Only project owner or admin can manage applicants
+    if (project.owner.toString() !== req.user._id.toString() && !req.user.isAdmin) {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+
+    const applicant = project.applicants.find(
+      a => a.user.toString() === req.params.applicantId
+    );
+    if (!applicant) {
+      return res.status(404).json({ message: 'Applicant not found' });
+    }
+
+    applicant.status = status;
+
+    // If accepted, add to team members
+    if (status === 'accepted') {
+      const alreadyInTeam = project.teamMembers.some(
+        tm => tm.user.toString() === req.params.applicantId
+      );
+      if (!alreadyInTeam) {
+        project.teamMembers.push({
+          user: req.params.applicantId,
+          role: 'Team Member'
+        });
+      }
+    }
+
+    await project.save();
+
+    // Send notification to applicant
+    const notifTitle = status === 'accepted'
+      ? 'Application Accepted!'
+      : 'Application Update';
+    const notifBody = status === 'accepted'
+      ? `Your application to "${project.title}" has been accepted! You are now a team member.`
+      : `Your application to "${project.title}" was not selected at this time.`;
+
+    const notifType = status === 'accepted' ? 'application_accepted' : 'application_rejected';
+
+    sendNotification(
+      req.params.applicantId,
+      notifType,
+      notifTitle,
+      notifBody,
+      { projectId: project._id.toString(), status }
+    ).catch(err => console.error('Applicant notification error:', err));
+
+    const populated = await Project.findById(project._id)
+      .populate('owner', 'name role avatar title')
+      .populate('teamMembers.user', 'name avatar title')
+      .populate('applicants.user', 'name avatar title');
+
+    res.json(populated);
+  } catch (error) {
+    console.error('Manage applicant error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
