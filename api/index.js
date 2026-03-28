@@ -71,14 +71,51 @@ app.get('/api/health', (req, res) => {
 
 // Error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Express Error:', err.stack);
   res.status(err.statusCode || 500).json({
-    message: err.message || 'Internal Server Error'
+    message: err.message || 'Internal Server Error',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
 
 // Export as serverless handler
 module.exports = async (req, res) => {
-  await connectDB();
-  return app(req, res);
+  const url = req.url || '';
+  const isHealthCheck = url.includes('/api/health');
+
+  try {
+    // 1. Diagnostics (logs only)
+    if (!process.env.MONGODB_URI) console.warn('DIAGNOSTIC: MONGODB_URI is missing');
+    if (!process.env.JWT_SECRET) console.warn('DIAGNOSTIC: JWT_SECRET is missing');
+
+    // 2. Database Connection
+    try {
+      await connectDB();
+    } catch (dbError) {
+      console.error('Database connection failed in handler:', dbError.message);
+      // If it's a health check, we continue so we can return a "degraded" status
+      if (!isHealthCheck) {
+        throw dbError; // Rethrow to be caught by the outer catch
+      }
+    }
+
+    // 3. App Execution
+    return app(req, res);
+
+  } catch (error) {
+    console.error('CRITICAL SERVERLESS CRASH:', error);
+    
+    // Return a JSON error instead of crashing the function
+    res.status(500).json({
+      status: 'error',
+      message: 'The SpaceLink AI API encountered a critical boot error.',
+      debug: {
+        type: error.name,
+        message: error.message,
+        has_db_uri: !!process.env.MONGODB_URI,
+        has_jwt_secret: !!process.env.JWT_SECRET,
+        timestamp: new Date().toISOString()
+      }
+    });
+  }
 };
