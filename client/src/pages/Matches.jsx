@@ -89,6 +89,24 @@ export default function Matches() {
                         <span key={j} className="chip chip-outline">{s}</span>
                       ))}
                     </div>
+                    {match.breakdown && (
+                      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.75rem', padding: '0.5rem', background: 'var(--surface-variant)', borderRadius: '0.5rem', fontSize: '0.75rem', fontWeight: 500 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'var(--primary)' }}>code</span>
+                          {match.breakdown.skills}%
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'var(--tertiary)' }}>favorite</span>
+                          {match.breakdown.interests}%
+                        </div>
+                        {match.matchType === 'user' && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'var(--secondary)' }}>work</span>
+                            {match.breakdown.experience}%
+                          </div>
+                        )}
+                      </div>
+                    )}
                     <div className="match-why-card">
                       <div className="match-why-header">
                         <span className="material-symbols-outlined" style={{ fontSize: '1rem', color: 'var(--tertiary)' }}>auto_awesome</span>

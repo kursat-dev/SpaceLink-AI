@@ -21,16 +21,48 @@ function jaccardSimilarity(setA, setB) {
   return intersection.size / union.size;
 }
 
-/**
- * Calculate match score between two entities.
- * Weighs: skills (60%) + interests (40%)
- */
-function calculateMatchScore(userSkills, userInterests, targetSkills, targetInterests) {
-  const skillScore = jaccardSimilarity(userSkills || [], targetSkills || []);
-  const interestScore = jaccardSimilarity(userInterests || [], targetInterests || []);
+const experienceWeights = {
+  'Junior': 1,
+  'Mid-Level': 2,
+  'Senior': 3,
+  'Lead': 4,
+  'Executive': 5
+};
 
-  const weightedScore = (skillScore * 0.6) + (interestScore * 0.4);
-  return Math.round(weightedScore * 100);
+/**
+ * Calculate match score between user and target
+ */
+function calculateMatchScore(user, target, type = 'user') {
+  const userSkills = user.skills || [];
+  const targetSkills = type === 'user' ? (target.skills || []) : (target.requiredSkills || []);
+  const userInterests = user.interests || [];
+  const targetInterests = type === 'user' ? (target.interests || []) : (target.tags || []);
+
+  const skillScore = jaccardSimilarity(userSkills, targetSkills);
+  const interestScore = jaccardSimilarity(userInterests, targetInterests);
+
+  let totalScore = 0;
+  let breakdown = {
+    skills: Math.round(skillScore * 100),
+    interests: Math.round(interestScore * 100),
+    experience: 0
+  };
+
+  if (type === 'user') {
+    const uExp = experienceWeights[user.experienceLevel] || 2;
+    const tExp = experienceWeights[target.experienceLevel] || 2;
+    // Calculate experience similarity (0 to 1)
+    const expDiff = Math.abs(uExp - tExp);
+    const expScore = 1 - (expDiff / 4); // Max diff is 4 (5 - 1). If diff is 0 -> 1.
+    breakdown.experience = Math.round(expScore * 100);
+
+    totalScore = Math.round((skillScore * 0.6 + interestScore * 0.25 + expScore * 0.15) * 100);
+  } else {
+    // For projects there is no experience level, we adjust scaling slightly
+    totalScore = Math.round((skillScore * 0.70 + interestScore * 0.30) * 100);
+  }
+
+  return { totalScore, breakdown };
 }
 
 /**
@@ -79,33 +111,43 @@ router.get('/', auth, async (req, res) => {
 
     const results = { users: [], projects: [] };
 
+    const skillRegexes = (currentUser.skills || []).map(s => new RegExp(`^${s}$`, 'i'));
+    const interestRegexes = (currentUser.interests || []).map(i => new RegExp(`^${i}$`, 'i'));
+
     // Match with users
     if (type === 'all' || type === 'users') {
-      const users = await User.find({
-        _id: { $ne: currentUser._id }
-      }).select('-password').limit(50);
+      let query = { _id: { $ne: currentUser._id } };
+      
+      if (skillRegexes.length > 0 || interestRegexes.length > 0) {
+        query.$or = [];
+        if (skillRegexes.length > 0) query.$or.push({ skills: { $in: skillRegexes } });
+        if (interestRegexes.length > 0) query.$or.push({ interests: { $in: interestRegexes } });
+      }
+
+      const users = await User.find(query).select('-password').limit(100);
 
       const userMatches = users
         .map(user => {
-          const score = calculateMatchScore(
-            currentUser.skills, currentUser.interests,
-            user.skills, user.interests
-          );
-          const reason = generateMatchReason(
-            currentUser.skills, user.skills,
-            currentUser.interests, user.interests,
+          const matchData = calculateMatchScore(currentUser, user, 'user');
+          const explanation = generateMatchReason(
+            currentUser.skills || [], user.skills || [],
+            currentUser.interests || [], user.interests || [],
             user.name,
             lang
           );
           return {
             user,
-            score,
-            reason,
+            totalScore: matchData.totalScore,
+            breakdown: matchData.breakdown,
+            explanation,
+            // Maintained for frontend backwards compat
+            score: matchData.totalScore,
+            reason: explanation, 
             type: 'user'
           };
         })
-        .filter(m => m.score >= parseInt(minScore))
-        .sort((a, b) => b.score - a.score)
+        .filter(m => m.totalScore >= parseInt(minScore) && m.totalScore > 0)
+        .sort((a, b) => b.totalScore - a.totalScore)
         .slice(0, 10);
 
       results.users = userMatches;
@@ -113,35 +155,44 @@ router.get('/', auth, async (req, res) => {
 
     // Match with projects
     if (type === 'all' || type === 'projects') {
-      const projects = await Project.find({
+      let pQuery = {
         owner: { $ne: currentUser._id },
         status: 'active'
-      })
+      };
+
+      if (skillRegexes.length > 0 || interestRegexes.length > 0) {
+        pQuery.$or = [];
+        if (skillRegexes.length > 0) pQuery.$or.push({ requiredSkills: { $in: skillRegexes } });
+        if (interestRegexes.length > 0) pQuery.$or.push({ tags: { $in: interestRegexes } });
+      }
+
+      const projects = await Project.find(pQuery)
         .populate('owner', 'name role avatar title')
         .populate('teamMembers.user', 'name avatar title')
-        .limit(50);
+        .limit(100);
 
       const projectMatches = projects
         .map(project => {
-          const score = calculateMatchScore(
-            currentUser.skills, currentUser.interests,
-            project.requiredSkills, project.tags || []
-          );
-          const reason = generateMatchReason(
-            currentUser.skills, project.requiredSkills,
-            currentUser.interests, project.tags || [],
+          const matchData = calculateMatchScore(currentUser, project, 'project');
+          const explanation = generateMatchReason(
+            currentUser.skills || [], project.requiredSkills || [],
+            currentUser.interests || [], project.tags || [],
             project.title,
             lang
           );
           return {
             project,
-            score,
-            reason,
+            totalScore: matchData.totalScore,
+            breakdown: matchData.breakdown,
+            explanation,
+            // Maintained for frontend backwards compat
+            score: matchData.totalScore,
+            reason: explanation,
             type: 'project'
           };
         })
-        .filter(m => m.score >= parseInt(minScore))
-        .sort((a, b) => b.score - a.score)
+        .filter(m => m.totalScore >= parseInt(minScore) && m.totalScore > 0)
+        .sort((a, b) => b.totalScore - a.totalScore)
         .slice(0, 10);
 
       results.projects = projectMatches;
@@ -149,14 +200,14 @@ router.get('/', auth, async (req, res) => {
 
     res.json(results);
 
-    const highMatches = results.users.filter(m => m.score >= 60);
+    const highMatches = results.users.filter(m => m.totalScore >= 60);
     for (const match of highMatches) {
       sendNotification(
         match.user._id,
         'new_match',
         'New match found!',
-        `${currentUser.name} is a ${match.score}% match with you`,
-        { userId: currentUser._id.toString(), score: match.score }
+        `${currentUser.name} is a ${match.totalScore}% match with you`,
+        { userId: currentUser._id.toString(), score: match.totalScore }
       ).catch(err => console.error('Match bildirim hatasi:', err));
     }
   } catch (error) {
