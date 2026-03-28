@@ -72,10 +72,18 @@
 .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
 .hero-visual { position: relative; }
 .hero-image-container {
-  padding: 1rem;
+  padding: 0;
   border-radius: 2rem;
   box-shadow: 0 24px 80px rgba(0, 82, 208, 0.05);
   border: 1px solid rgba(255,255,255,0.2);
+  overflow: hidden;
+}
+.hero-video {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 2rem;
+  display: block;
 }
 .hero-image-placeholder {
   border-radius: 1.5rem;

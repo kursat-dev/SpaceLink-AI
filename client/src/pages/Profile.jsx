@@ -76,6 +76,12 @@ export default function Profile() {
                 ) : (
                   <p className="profile-title-text">{profile.title}</p>
                 )}
+                {profile.orbitExperience && (
+                  <p className="profile-title-text" style={{marginTop: '0.25rem', color: 'var(--primary)', fontWeight: 500}}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '1rem', verticalAlign: 'text-bottom', marginRight: '0.25rem' }}>public</span>
+                    Yörünge Deneyimi: {profile.orbitExperience}
+                  </p>
+                )}
                 <div className="profile-badges">
                   {profile.isAvailable && <span className="chip chip-outline">{t('profile.badge_available')}</span>}
                   {profile.isVerified && <span className="chip chip-secondary">{t('profile.badge_verified')}</span>}
@@ -107,6 +113,24 @@ export default function Profile() {
                   <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>mail</span>
                   {profile.email}
                 </span>
+              )}
+              {profile.socialLinks?.linkedin && (
+                <a href={profile.socialLinks.linkedin.startsWith('http') ? profile.socialLinks.linkedin : `https://${profile.socialLinks.linkedin}`} target="_blank" rel="noreferrer" className="profile-contact-item" style={{textDecoration: 'none', color: 'var(--on-surface)'}}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>work</span>
+                  LinkedIn
+                </a>
+              )}
+              {profile.socialLinks?.github && (
+                <a href={profile.socialLinks.github.startsWith('http') ? profile.socialLinks.github : `https://${profile.socialLinks.github}`} target="_blank" rel="noreferrer" className="profile-contact-item" style={{textDecoration: 'none', color: 'var(--on-surface)'}}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>code</span>
+                  GitHub
+                </a>
+              )}
+              {profile.socialLinks?.twitter && (
+                <a href={profile.socialLinks.twitter.startsWith('http') ? profile.socialLinks.twitter : `https://${profile.socialLinks.twitter}`} target="_blank" rel="noreferrer" className="profile-contact-item" style={{textDecoration: 'none', color: 'var(--on-surface)'}}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>tag</span>
+                  Twitter / X
+                </a>
               )}
             </div>
             {isOwnProfile && (

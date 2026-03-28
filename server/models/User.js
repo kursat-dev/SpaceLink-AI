@@ -73,6 +73,15 @@ const userSchema = new mongoose.Schema({
     name: String,
     level: String
   }],
+  orbitExperience: {
+    type: String,
+    default: ''
+  },
+  socialLinks: {
+    linkedin: { type: String, default: '' },
+    github: { type: String, default: '' },
+    twitter: { type: String, default: '' }
+  },
   experience: [{
     title: String,
     company: String,

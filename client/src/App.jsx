@@ -13,6 +13,7 @@ import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
 import Profile from './pages/Profile';
 import Messages from './pages/Messages';
+import Settings from './pages/Settings';
 import './index.css';
 
 function ProtectedRoute({ children }) {
@@ -40,6 +41,7 @@ function AppRoutes() {
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/users/:id" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>

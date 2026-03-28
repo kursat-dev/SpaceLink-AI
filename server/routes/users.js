@@ -69,8 +69,8 @@ router.put('/:id', auth, async (req, res) => {
     }
 
     const allowedFields = [
-      'name', 'title', 'bio', 'skills', 'interests',
-      'experienceLevel', 'location', 'website', 'avatar',
+      'name', 'email', 'title', 'bio', 'skills', 'interests',
+      'experienceLevel', 'orbitExperience', 'location', 'website', 'socialLinks', 'avatar',
       'isAvailable', 'languages', 'experience'
     ];
 

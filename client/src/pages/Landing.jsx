@@ -33,14 +33,14 @@ export default function Landing() {
           </div>
           <div className="hero-visual animate-fade-in animate-fade-in-delay-2">
             <div className="hero-image-container glass-card">
-              <div className="hero-image-placeholder">
-                <span className="material-symbols-outlined" style={{ fontSize: '6rem', color: 'var(--primary)', opacity: 0.3 }}>public</span>
-                <div className="hero-image-rings">
-                  <div className="ring ring-1"></div>
-                  <div className="ring ring-2"></div>
-                  <div className="ring ring-3"></div>
-                </div>
-              </div>
+              <video
+                className="hero-video"
+                autoPlay
+                muted
+                loop
+                playsInline
+                src="/assets/Astronot_Vizöründe_Uzay_İstasyonu_Yansıması.mp4"
+              />
             </div>
             <div className="hero-float-card glass-card animate-fade-in animate-fade-in-delay-3">
               <div className="hero-float-icon">

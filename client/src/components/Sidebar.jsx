@@ -14,7 +14,9 @@ export default function Sidebar() {
     { path: '/projects', icon: 'rocket_launch', label: t('sidebar.projects') },
     { path: '/users', icon: 'apartment', label: t('sidebar.companies') },
     { path: '/messages', icon: 'chat', label: t('sidebar.messages') },
+    { path: '/settings', icon: 'settings', label: t('sidebar.settings') || 'Ayarlar' },
   ];
+
 
   const handleLogout = () => {
     logout();
