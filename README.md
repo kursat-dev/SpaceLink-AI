@@ -6,7 +6,7 @@
 ![SpaceLink AI Tech](https://img.shields.io/badge/Stack-MERN-blue)
 ![SpaceLink AI i18n](https://img.shields.io/badge/i18n-EN%20%7C%20TR-green)
 
---
+---
 
 ## 🌌 Temel Özellikler
 
