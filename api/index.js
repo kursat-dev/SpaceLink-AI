@@ -43,28 +43,17 @@ app.use('/api/notifications', require('../server/routes/notifications'));
 
 // Health check (works even if DB is down)
 app.get('/api/health', async (req, res) => {
-  // We use require('mongoose') directly here to get the api-local state for UI
-  // But wait, the shared db.js handles it. Let's just check if connectDB works.
   try {
     await connectDB();
     res.json({
       status: 'ok',
       message: 'SpaceLink AI API is running on Vercel',
-      timestamp: new Date(),
-      diagnostics: {
-        db_state: 'connected',
-        db_ready: true,
-        has_mongodb_uri: !!process.env.MONGODB_URI,
-        has_jwt_secret: !!process.env.JWT_SECRET,
-        node_env: process.env.NODE_ENV || 'not set'
-      }
+      timestamp: new Date()
     });
   } catch (e) {
-    res.json({
-      status: 'degraded',
-      message: 'MongoDB connection failed',
-      timestamp: new Date(),
-      diagnostics: { db_error: e.message }
+    res.status(503).json({
+      status: 'error',
+      message: 'Database connection failed'
     });
   }
 });
@@ -87,10 +76,7 @@ module.exports = async (req, res) => {
     console.error('SERVERLESS HANDLER ERROR:', error);
     res.status(500).json({
       status: 'error',
-      message: 'API boot error',
-      debug_error: error.message,
-      has_db_uri: !!process.env.MONGODB_URI,
-      has_jwt_secret: !!process.env.JWT_SECRET
+      message: 'API boot error'
     });
   }
 };

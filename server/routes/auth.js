@@ -72,10 +72,7 @@ router.post('/register', [
       name: error.name
     });
     res.status(500).json({ 
-      message: 'Server error during registration',
-      debug_error: error.message,
-      debug_name: error.name,
-      debug_stack: error.stack?.split('\n').slice(0, 5)
+      message: 'Server error during registration'
     });
   }
 });
