@@ -65,8 +65,23 @@ app.use('/api/recommendations', require('../server/routes/recommendations'));
 app.use('/api/messages', require('../server/routes/messages'));
 app.use('/api/notifications', require('../server/routes/notifications'));
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'SpaceLink AI API is running on Vercel', timestamp: new Date() });
+app.get('/api/health', async (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  const dbStates = { 0: 'disconnected', 1: 'connected', 2: 'connecting', 3: 'disconnecting' };
+  
+  res.json({
+    status: dbState === 1 ? 'ok' : 'degraded',
+    message: 'SpaceLink AI API is running on Vercel',
+    timestamp: new Date(),
+    diagnostics: {
+      db_state: dbStates[dbState] || 'unknown',
+      db_ready: dbState === 1,
+      has_mongodb_uri: !!process.env.MONGODB_URI,
+      mongodb_uri_prefix: process.env.MONGODB_URI ? process.env.MONGODB_URI.substring(0, 20) + '...' : 'NOT SET',
+      has_jwt_secret: !!process.env.JWT_SECRET,
+      node_env: process.env.NODE_ENV || 'not set'
+    }
+  });
 });
 
 // Error handler
