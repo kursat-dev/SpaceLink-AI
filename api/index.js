@@ -7,51 +7,11 @@ const mongoose = require('mongoose');
 // Load env vars
 require('dotenv').config();
 
-// ----- Serverless MongoDB Connection (Vercel Official Pattern) -----
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-const connectDB = async () => {
-  if (cached.conn) {
-    return cached.conn;
-  }
-
-  if (!process.env.MONGODB_URI) {
-    throw new Error('MONGODB_URI is not defined');
-  }
-
-  if (!cached.promise) {
-    mongoose.set('strictQuery', false);
-    
-    // Crucial: bufferCommands false in connect options prevents hang
-    const opts = {
-      bufferCommands: false,
-      serverSelectionTimeoutMS: 5000,
-    };
-
-    console.log('Establishing new MongoDB connection...');
-    cached.promise = mongoose.connect(process.env.MONGODB_URI, opts).then((mongooseInstance) => {
-      console.log('MongoDB connection established successfully.');
-      return mongooseInstance;
-    });
-  }
-
-  try {
-    cached.conn = await cached.promise;
-  } catch (e) {
-    cached.promise = null;
-    console.error('MongoDB Connection Error:', e.message);
-    throw e;
-  }
-
-  return cached.conn;
-};
+const connectDB = require('../server/config/db');
 
 // ----- Express App -----
 const app = express();
+app.set('trust proxy', 1); // Fixes rate-limit X-Forwarded-For warning behind Vercel edge
 
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({ origin: true, credentials: true }));
@@ -83,20 +43,30 @@ app.use('/api/notifications', require('../server/routes/notifications'));
 
 // Health check (works even if DB is down)
 app.get('/api/health', async (req, res) => {
-  const dbState = mongoose.connection.readyState;
-  const dbStates = { 0: 'disconnected', 1: 'connected', 2: 'connecting', 3: 'disconnecting' };
-  res.json({
-    status: dbState === 1 ? 'ok' : 'degraded',
-    message: 'SpaceLink AI API is running on Vercel',
-    timestamp: new Date(),
-    diagnostics: {
-      db_state: dbStates[dbState] || 'unknown',
-      db_ready: dbState === 1,
-      has_mongodb_uri: !!process.env.MONGODB_URI,
-      has_jwt_secret: !!process.env.JWT_SECRET,
-      node_env: process.env.NODE_ENV || 'not set'
-    }
-  });
+  // We use require('mongoose') directly here to get the api-local state for UI
+  // But wait, the shared db.js handles it. Let's just check if connectDB works.
+  try {
+    await connectDB();
+    res.json({
+      status: 'ok',
+      message: 'SpaceLink AI API is running on Vercel',
+      timestamp: new Date(),
+      diagnostics: {
+        db_state: 'connected',
+        db_ready: true,
+        has_mongodb_uri: !!process.env.MONGODB_URI,
+        has_jwt_secret: !!process.env.JWT_SECRET,
+        node_env: process.env.NODE_ENV || 'not set'
+      }
+    });
+  } catch (e) {
+    res.json({
+      status: 'degraded',
+      message: 'MongoDB connection failed',
+      timestamp: new Date(),
+      diagnostics: { db_error: e.message }
+    });
+  }
 });
 
 // Error handler
