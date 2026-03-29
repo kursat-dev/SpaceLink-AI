@@ -7,39 +7,47 @@ const mongoose = require('mongoose');
 // Load env vars
 require('dotenv').config();
 
-// ----- Serverless MongoDB Connection (Cached Promise Pattern) -----
-// This is the recommended pattern for Vercel/serverless environments.
-// We cache the connection promise globally so multiple invocations
-// reuse the same connection instead of creating new ones.
-let cachedConnection = null;
+// ----- Serverless MongoDB Connection (Vercel Official Pattern) -----
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
 const connectDB = async () => {
-  if (cachedConnection && mongoose.connection.readyState === 1) {
-    return cachedConnection;
+  if (cached.conn) {
+    return cached.conn;
   }
 
   if (!process.env.MONGODB_URI) {
     throw new Error('MONGODB_URI is not defined');
   }
 
-  // Disable buffering so queries fail fast instead of hanging
-  mongoose.set('bufferCommands', false);
-  mongoose.set('strictQuery', false);
+  if (!cached.promise) {
+    mongoose.set('strictQuery', false);
+    
+    // Crucial: bufferCommands false in connect options prevents hang
+    const opts = {
+      bufferCommands: false,
+      serverSelectionTimeoutMS: 5000,
+    };
+
+    console.log('Establishing new MongoDB connection...');
+    cached.promise = mongoose.connect(process.env.MONGODB_URI, opts).then((mongooseInstance) => {
+      console.log('MongoDB connection established successfully.');
+      return mongooseInstance;
+    });
+  }
 
   try {
-    cachedConnection = await mongoose.connect(process.env.MONGODB_URI, {
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 45000,
-      maxPoolSize: 10,
-    });
-    console.log(`MongoDB Connected: ${cachedConnection.connection.host}`);
-    return cachedConnection;
-  } catch (error) {
-    // Reset so next invocation retries
-    cachedConnection = null;
-    console.error('MongoDB Connection Error:', error.message);
-    throw error;
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    console.error('MongoDB Connection Error:', e.message);
+    throw e;
   }
+
+  return cached.conn;
 };
 
 // ----- Express App -----
