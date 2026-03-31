@@ -110,7 +110,7 @@ node seed.js
 
 ## 🛡️ Lisans
 
-MIT Lisansı altında dağıtılmaktadır. Daha fazla bilgi için `LICENSE` dosyasına bakın.
+MIT Lisansı altında dağıtılmaktadır. Daha fazla bilgi için [LICENSE](./LICENSE) dosyasına bakın.
 
 ---
 
