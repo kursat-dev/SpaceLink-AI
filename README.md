@@ -2,6 +2,18 @@
 
 **SpaceLink AI**, modern uzay endüstrisi için özel olarak tasarlanmış akıllı bir ekosistem eşleştirme platformudur. Havacılık mühendislerini, yörünge girişimlerini, uydu işletmelerini ve uzay odaklı yatırımcıları teknik sinerji ve proje gereksinimlerine göre bağlamak için sinirsel bir eşleştirme motoru kullanır.
 
+---
+
+### 🛰️ TUA Astrohackathon Projesi
+
+Bu proje, **Türkiye Uzay Ajansı (TUA)** tarafından düzenlenen **[TUA Astrohackathon](https://tuaastrohackathon.com/tr)** için özel olarak geliştirilmiştir. 
+
+*   **Kurum:** [Türkiye Uzay Ajansı (TUA)](https://tua.gov.tr/tr)
+*   **Etkinlik:** [TUA Astrohackathon](https://tuaastrohackathon.com/tr)
+*   **Misyon:** Uzay endüstrisindeki paydaşları bir araya getirerek "Yeni Uzay" (New Space) ekosistemini güçlendirmek.
+
+---
+
 ![SpaceLink AI Preview](https://img.shields.io/badge/Status-Beta-purple)
 ![SpaceLink AI Tech](https://img.shields.io/badge/Stack-MERN-blue)
 ![SpaceLink AI i18n](https://img.shields.io/badge/i18n-EN%20%7C%20TR-green)
@@ -12,11 +24,11 @@
 ## 🌌 Temel Özellikler
 
 - **Sinirsel Eşleştirme Motoru**: Mükemmel teknik ortakları bulmak için yetenekleri ve ilgi alanlarını analiz eden tescilli yapay zeka (Ağırlıklı Jaccard Benzerliği).
-- **Görev Dizini**: Aktif yörünge projeleri, faydalı yükler ve alt sistemler için merkezi bir üs.
-- **Gerçek Zamanlı Mesajlaşma**: Eşleşen taraflar arasında güvenli iletişim kanalları.
-- **Uluslararasılaştırma (i18n)**: Gerçek zamanlı arayüz değiştirme ile İngilizce ve Türkçe dilleri için yerel destek.
-- **Göksel Kontrol Paneli**: Yörünge ağ durumunuzun 360 derecelik bir görünümünü sunan, yüksek kaliteli, glassmorphism esintili bir kullanıcı arayüzü ("Celestial Architect").
-- **Dinamik Profiller**: Havacılık ve uzay işgücü için yetenek tabanlı telemetri ve deneyim takibi.
+- **Görev Dizini (Mission Directory)**: Aktif yörünge projeleri, faydalı yükler ve alt sistemler için merkezi bir üs.
+- **Gerçek Zamanlı Mesajlaşma**: Eşleşen taraflar arasında güvenli iletişim kanalları (Socket.io).
+- **Uluslararasılaştırma (i18n)**: İngilizce ve Türkçe dilleri için tam destek ve gerçek zamanlı geçiş.
+- **Göksel Kontrol Paneli (Celestial Architect)**: Glassmorphism esintili, modern ve premium kullanıcı arayüzü ile 360 derecelik ekosistem görünümü.
+- **Dinamik Profiller**: Havacılık ve uzay profesyonelleri için yetenek tabanlı telemetri ve deneyim takibi.
 
 ---
 
@@ -28,28 +40,27 @@ Proje, modüler bir full-stack mimarisini takip eder:
 SpaceLink-AI/
 ├── client/                 # Frontend (React + Vite)
 │   ├── src/
-│   │   ├── components/     # Yeniden kullanılabilir kullanıcı arayüzü bileşenleri
-│   │   ├── pages/          # Bireysel ekran tanımları
-│   │   ├── context/        # Kimlik doğrulama (Auth) ve global durum (state)
-│   │   ├── locales/        # i18n (EN/TR) çeviri sözlükleri
-│   │   └── api.js          # JWT interceptor'ları ile Axios istemcisi
-│   └── index.html          # Giriş noktası
+│   │   ├── components/     # Yeniden kullanılabilir UI bileşenleri
+│   │   ├── pages/          # Sayfa tanımları
+│   │   ├── context/        # Auth ve Global State
+│   │   ├── locales/        # i18n (EN/TR) sözlükleri
+│   │   └── api.js          # Axios istemcisi
 ├── server/                 # Backend (Node.js + Express)
-│   ├── models/             # Mongoose şemaları (User, Project, Message)
-│   ├── routes/             # API uç noktaları (Auth, Matches, Projects, vb.)
-│   ├── middleware/         # Kimlik doğrulama korumaları ve Dil ayrıştırma
-│   ├── config/             # Veritabanı ve Sunucu yapılandırması
-│   └── seed.js             # Sahte veri (mock data) oluşturma betiği
+│   ├── models/             # Mongoose (User, Project, Message)
+│   ├── routes/             # API uç noktaları
+│   ├── middleware/         # Auth ve Dil ayrıştırma
+│   ├── config/             # DB ve Sunucu config
+│   └── seed.js             # Mock veri oluşturma
 ├── api/                    # API dokümantasyonu
-├── stitch/                 # Tasarım varlıkları ve orijinal stil rehberi
-└── architecture_analysis.md # Detaylı mimari analizi
+├── stitch/                 # Tasarım varlıkları ve stil rehberi
+└── architecture_analysis.md # Detaylı teknik analiz
 ```
 
 ---
 
 ## 🛠️ Teknoloji Yığını
 
-- **Frontend**: React 18, Vite, React Router 6, i18next, Vanilla CSS (Celestial Architect Tasarım Sistemi).
+- **Frontend**: React 18, Vite, React Router 6, i18next, Vanilla CSS (Celestial Architect Design System).
 - **Backend**: Node.js, Express, JWT, Bcrypt, Socket.io.
 - **Veritabanı**: MongoDB + Mongoose.
 - **İkonlar**: Google Material Symbols.
@@ -61,7 +72,7 @@ SpaceLink-AI/
 
 ### 1. Ön Koşullar
 - Node.js (v16+)
-- MongoDB (Yerel olarak veya Atlas üzerinden çalışan)
+- MongoDB (Yerel veya Atlas)
 
 ### 2. Backend Kurulumu
 ```bash
@@ -78,8 +89,8 @@ npm install
 npm run dev
 ```
 
-### 4. Veritabanını Doldurma (Seeding)
-Uygulamayı sahte uzay endüstrisi verileriyle doldurmak için:
+### 4. Veri Doldurma (Seeding)
+Uygulamayı sektörel verilerle test etmek için:
 ```bash
 cd server
 node seed.js
@@ -87,20 +98,20 @@ node seed.js
 
 ---
 
-## � Dokümantasyon
+## 📄 Dokümantasyon
 
-- [Client Dokümantasyonu](./client/README.md) - Frontend geliştirme rehberi
-- [Server Dokümantasyonu](./server/README.md) - Backend API ve mimari
-- [API Dokümantasyonu](./api/README.md) - API endpointleri
-- [Tasarım Rehberi](./stitch/README.md) - UI/UX tasarım prensipleri
-- [Mimari Analizi](./architecture_analysis.md) - Detaylı teknik analiz
+- [İstemci (Client)](./client/README.md)
+- [Sunucu (Server)](./server/README.md)
+- [API Rehberi](./api/README.md)
+- [Tasarım Rehberi](./stitch/README.md)
+- [Mimari Analiz](./architecture_analysis.md)
 
 ---
 
-## �🛡️ Lisans
+## 🛡️ Lisans
 
 MIT Lisansı altında dağıtılmaktadır. Daha fazla bilgi için `LICENSE` dosyasına bakın.
 
 ---
 
-**SpaceLink AI** — *Akıllı bağlantılar aracılığıyla Yörünge Ekonomisine öncülük ediyor.*
+**SpaceLink AI** — *Akıllı bağlantılar aracılığıyla Yörünge Ekonomisine öncülük ediyor (Leading the Orbital Economy).*
